@@ -1,4 +1,5 @@
 #include"Board.h"
+#include <iostream>
 
 void Board::initializeBoard()
 {
@@ -13,4 +14,15 @@ void Board::initializeBoard()
 
 	// 放黑棋
 
+}
+
+void Board::Print()
+{
+	system("CLS");
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 9; j++) {
+			std::cout << board[i][j] << "|";
+		}
+		std::cout << "--------------------\n";
+	}
 }
