@@ -1,14 +1,12 @@
-#include"Chess.h"
-
-Board b;
-
+#include"GameManager.h"
+using namespace std;
 // ========== Chess class ========== //
 void Chess::setType(string input)
 {
-	type = input;
+	//type = input;
 }
 
-string Chess::getType()
+int Chess::getType()
 {
 	return type;
 }
@@ -20,7 +18,7 @@ int Chess::getCurrentPlayer()
 
 void Chess::Move(Board& b, position& fromPos, position& toPos)
 {
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
+	if (b.board[toPos.y][toPos.x] == ' ' && b.board[fromPos.y][fromPos.x] != ' ') {
 		b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 		b.board[fromPos.y][fromPos.x] = ' ';
 	}
@@ -30,11 +28,6 @@ void Chess::Move(Board& b, position& fromPos, position& toPos)
 void General::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// player red
 	if (getCurrentPlayer() == 1) {
@@ -77,7 +70,7 @@ void General::Move(Board& b, position& fromPos, position& toPos)
 		}
 	}
 
-	if (chessBeyond == true && basicCheck == true) {
+	if (chessBeyond == true) {
 		b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 		b.board[fromPos.y][fromPos.x] = ' ';
 	}
@@ -88,11 +81,6 @@ void General::Move(Board& b, position& fromPos, position& toPos)
 void Advisor::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// player red
 	if (getCurrentPlayer() == 1) {
@@ -135,7 +123,7 @@ void Advisor::Move(Board& b, position& fromPos, position& toPos)
 		}
 	}
 
-	if (chessBeyond == true && basicCheck == true) {
+	if (chessBeyond == true) {
 		b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 		b.board[fromPos.y][fromPos.x] = ' ';
 	}
@@ -146,11 +134,6 @@ void Elephant::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessInMiddle = false;		// 確認有沒有擠象眼
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// wrong move 
 	if (fromPos.x == toPos.x || fromPos.y == toPos.y) {
@@ -235,7 +218,7 @@ void Elephant::Move(Board& b, position& fromPos, position& toPos)
 			}
 		}
 
-		if (chessInMiddle == false && chessBeyond == true && basicCheck == true) {
+		if (chessInMiddle == false && chessBeyond == true) {
 			b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 			b.board[fromPos.y][fromPos.x] = ' ';
 		}
@@ -251,11 +234,6 @@ void Chariot::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessInMiddle = false;		// 確認中間有沒有隔著棋
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// wrong move (走斜線)
 	if (fromPos.x != toPos.x && fromPos.y != toPos.y) {
@@ -318,7 +296,7 @@ void Chariot::Move(Board& b, position& fromPos, position& toPos)
 			chessBeyond = true;
 		}
 
-		if (chessInMiddle == true || chessBeyond == false || basicCheck == false) {
+		if (chessInMiddle == true || chessBeyond == false) {
 			cout << "wrong move\n";
 		}
 		else {
@@ -333,11 +311,6 @@ void Horse::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessInMiddle = false;		// 確認有沒有拐馬腳
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// wrong move
 	if (fromPos.x == toPos.x || fromPos.y == toPos.y) {
@@ -368,7 +341,7 @@ void Horse::Move(Board& b, position& fromPos, position& toPos)
 			}
 		}
 		// 向右移動
-		else if(toPos.x - fromPos.x == 2){
+		else if (toPos.x - fromPos.x == 2) {
 			if (b.board[fromPos.y][fromPos.x + 1] != ' ') {
 				chessInMiddle = true;
 			}
@@ -386,7 +359,7 @@ void Horse::Move(Board& b, position& fromPos, position& toPos)
 			chessBeyond = true;
 		}
 
-		if (chessInMiddle == true || chessBeyond == false || basicCheck == false) {
+		if (chessInMiddle == true || chessBeyond == false) {
 			cout << "wrong move\n";
 		}
 		else {
@@ -402,11 +375,6 @@ void Cannon::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessInMiddle = false;		// 確認中間有沒有隔著一棋
 	bool chessBeyond = false;		// 確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// wrong move (走斜線)
 	if (fromPos.x != toPos.x && fromPos.y != toPos.y) {
@@ -490,12 +458,12 @@ void Cannon::Move(Board& b, position& fromPos, position& toPos)
 		}
 
 		// 跳吃並移動
-		if (chessInMiddle == true && chessBeyond == true && basicCheck == true) {
+		if (chessInMiddle == true && chessBeyond == true) {
 			b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 			b.board[fromPos.y][fromPos.x] = ' ';
 		}
 		// 純移動
-		else if (chessInMiddle == false && chessBeyond == true && basicCheck == true) {
+		else if (chessInMiddle == false && chessBeyond == true) {
 			b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 			b.board[fromPos.y][fromPos.x] = ' ';
 		}
@@ -509,11 +477,6 @@ void Cannon::Move(Board& b, position& fromPos, position& toPos)
 void Soldier::Move(Board& b, position& fromPos, position& toPos)
 {
 	bool chessBeyond = false;		//確認toPos為對方的棋或空白
-	bool basicCheck = false;		// 確認在版面內
-
-	if (toPos.y < 10 && toPos.x < 9 && fromPos.y < 10 && fromPos.x < 9 && toPos.y > 0 && toPos.x > 0 && fromPos.y > 0 && fromPos.x > 0) {
-		basicCheck = true;
-	}
 
 	// player red
 	if (getCurrentPlayer() == 1) {
@@ -574,7 +537,7 @@ void Soldier::Move(Board& b, position& fromPos, position& toPos)
 		}
 	}
 
-	if (chessBeyond == true && basicCheck == true) {
+	if (chessBeyond == true) {
 		b.board[toPos.y][toPos.x] = b.board[fromPos.y][fromPos.x];
 		b.board[fromPos.y][fromPos.x] = ' ';
 	}

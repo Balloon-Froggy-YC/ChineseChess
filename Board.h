@@ -11,5 +11,6 @@ public:
 	//邊界
 	//楚河漢界
 	//現在的AB
+	void Print();
 };
 
